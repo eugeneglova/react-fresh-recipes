@@ -70,9 +70,28 @@ const App = () => {
         <button type="button" onClick={() => fetch()}>
           What's For Lunch?
         </button>
+        {recipes.map(recipe => (
+          <Recipe {...recipe} ingredients={ingredients} />
+        ))}
       </header>
     </div>
   );
 };
+
+const Recipe = ({ title, ingredients }) => {
+  return (
+    <div>
+      <h1>{title}</h1>
+      <p>What you need:</p>
+      <ul>
+        {ingredients.map(ingredient => (
+          <Ingredient {...ingredient} />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const Ingredient = ({ title }) => <li key={title}>{title}</li>;
 
 export default App;
