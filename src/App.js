@@ -34,7 +34,7 @@ const App = () => {
           </button>
         ) : (
           recipes.map(recipe => (
-            <Recipe {...recipe} ingredients={ingredients} />
+            <Recipe key={recipe.title} {...recipe} ingredients={ingredients} />
           ))
         )}
       </header>
@@ -49,13 +49,13 @@ const Recipe = ({ title, ingredients }) => {
       <p>What you need:</p>
       <ul>
         {ingredients.map(ingredient => (
-          <Ingredient {...ingredient} />
+          <Ingredient key={ingredient.title} {...ingredient} />
         ))}
       </ul>
     </div>
   );
 };
 
-const Ingredient = ({ title }) => <li key={title}>{title}</li>;
+const Ingredient = ({ title }) => <li>{title}</li>;
 
 export default App;
