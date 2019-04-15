@@ -46,7 +46,7 @@ const App = () => {
     initialState
   );
 
-  const fetch = async () => {
+  const fetch = dispatch => async () => {
     dispatch(actions.setLoading(true));
     const [{ recipes }, { ingredients }] = await Promise.all([
       fetchRecipes(),
@@ -63,7 +63,7 @@ const App = () => {
         {loading ? (
           <h1>Loading...</h1>
         ) : recipes.length === 0 ? (
-          <button type="button" onClick={() => fetch()}>
+          <button type="button" onClick={fetch(dispatch)}>
             <h1>What's For Lunch?</h1>
           </button>
         ) : (
