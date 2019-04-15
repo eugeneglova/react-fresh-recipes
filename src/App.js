@@ -9,6 +9,8 @@ const fetchRecipes = async () =>
 const fetchIngredients = async () =>
   (await fetch("https://www.mocky.io/v2/5cac82f1300000664f10368f")).json();
 
+const dateFilter = date => new Date(date).getTime() > new Date().getTime();
+
 const App = () => {
   const [{ recipes, ingredients }, dispatch] = useReducer(
     reducer,
@@ -26,12 +28,12 @@ const App = () => {
     dispatch(actions.setLoading(false));
   };
 
-  const freshIngredients = ingredients.filter(
-    ({ "use-by": useBy }) => new Date(useBy).getTime() > new Date().getTime()
+  const freshIngredients = ingredients.filter(({ "use-by": date }) =>
+    dateFilter(date)
   );
 
-  const bestIngredients = freshIngredients.filter(
-    ({ "best-before": bestBefore }) => new Date(bestBefore).getTime() > new Date().getTime()
+  const bestIngredients = freshIngredients.filter(({ "best-before": date }) =>
+    dateFilter(date)
   );
 
   return (
