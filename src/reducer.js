@@ -10,10 +10,26 @@ const types = {
   SET_INGREDIENTS: "SET_INGREDIENTS"
 };
 
+const fetchRecipes = async () =>
+  (await fetch("https://www.mocky.io/v2/5c85f7a1340000e50f89bd6c")).json();
+
+const fetchIngredients = async () =>
+  (await fetch("https://www.mocky.io/v2/5cac82f1300000664f10368f")).json();
+
 export const actions = {
   setLoading: payload => ({ type: types.SET_LOADING, payload }),
   setRecipes: payload => ({ type: types.SET_RECIPES, payload }),
-  setIngredients: payload => ({ type: types.SET_INGREDIENTS, payload })
+  setIngredients: payload => ({ type: types.SET_INGREDIENTS, payload }),
+  fetch: dispatch => async () => {
+    dispatch(actions.setLoading(true));
+    const [{ recipes }, { ingredients }] = await Promise.all([
+      fetchRecipes(),
+      fetchIngredients()
+    ]);
+    dispatch(actions.setRecipes(recipes));
+    dispatch(actions.setIngredients(ingredients));
+    dispatch(actions.setLoading(false));
+  }
 };
 
 export const reducer = (state, action) => {

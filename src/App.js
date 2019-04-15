@@ -3,12 +3,6 @@ import React, { useReducer } from "react";
 import { initialState, reducer, actions } from "./reducer";
 import "./App.css";
 
-const fetchRecipes = async () =>
-  (await fetch("https://www.mocky.io/v2/5c85f7a1340000e50f89bd6c")).json();
-
-const fetchIngredients = async () =>
-  (await fetch("https://www.mocky.io/v2/5cac82f1300000664f10368f")).json();
-
 const dateFilter = date => new Date(date).getTime() > new Date().getTime();
 
 const getIngredientsFilter = ingredientsTitles => title =>
@@ -46,24 +40,13 @@ const App = () => {
     initialState
   );
 
-  const fetch = dispatch => async () => {
-    dispatch(actions.setLoading(true));
-    const [{ recipes }, { ingredients }] = await Promise.all([
-      fetchRecipes(),
-      fetchIngredients()
-    ]);
-    dispatch(actions.setRecipes(recipes));
-    dispatch(actions.setIngredients(ingredients));
-    dispatch(actions.setLoading(false));
-  };
-
   return (
     <div className="App">
       <header className="App-header">
         {loading ? (
           <h1>Loading...</h1>
         ) : recipes.length === 0 ? (
-          <button type="button" onClick={fetch(dispatch)}>
+          <button type="button" onClick={actions.fetch(dispatch)}>
             <h1>What's For Lunch?</h1>
           </button>
         ) : (
