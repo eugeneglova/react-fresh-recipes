@@ -11,6 +11,8 @@ const fetchIngredients = async () =>
 
 const dateFilter = date => new Date(date).getTime() > new Date().getTime();
 
+const getTitle = ({ title }) => title;
+
 const App = () => {
   const [{ recipes, ingredients }, dispatch] = useReducer(
     reducer,
@@ -32,12 +34,15 @@ const App = () => {
     dateFilter(date)
   );
 
-  const bestIngredients = freshIngredients.filter(({ "best-before": date }) =>
-    dateFilter(date)
-  );
+  const bestIngredients = freshIngredients
+    .filter(({ "best-before": date }) => dateFilter(date))
+    .map(getTitle);
 
-  const otherIngredients = freshIngredients.filter(
-    ({ "best-before": date }) => !dateFilter(date)
+  const bestRecipes = recipes.filter(
+    ({ title }) => bestIngredients.indexOf(title) !== -1
+  );
+  const otherRecipes = recipes.filter(
+    ({ title }) => bestIngredients.indexOf(title) === -1
   );
 
   return (
@@ -48,7 +53,9 @@ const App = () => {
             What's For Lunch?
           </button>
         ) : (
-          recipes.map(recipe => <Recipe key={recipe.title} recipe={recipe} />)
+          bestRecipes
+            .concat(otherRecipes)
+            .map(recipe => <Recipe key={recipe.title} recipe={recipe} />)
         )}
       </header>
     </div>
