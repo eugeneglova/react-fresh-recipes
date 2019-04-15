@@ -36,6 +36,10 @@ const App = () => {
     dateFilter(date)
   );
 
+  const otherIngredients = freshIngredients.filter(
+    ({ "best-before": date }) => !dateFilter(date)
+  );
+
   return (
     <div className="App">
       <header className="App-header">
