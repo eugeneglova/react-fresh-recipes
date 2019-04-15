@@ -4,7 +4,7 @@ import { initialState, reducer, actions } from "./reducer";
 import "./App.css";
 
 const fetchRecipes = async () =>
-  (await fetch("http://www.mocky.io/v2/5c85f7a1340000e50f89bd6c")).json();
+  (await fetch("https://www.mocky.io/v2/5c85f7a1340000e50f89bd6c")).json();
 
 const fetchIngredients = async () =>
   (await fetch("https://www.mocky.io/v2/5cac82f1300000664f10368f")).json();
