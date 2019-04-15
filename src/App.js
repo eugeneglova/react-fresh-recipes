@@ -26,6 +26,14 @@ const App = () => {
     dispatch(actions.setLoading(false));
   };
 
+  const freshIngredients = ingredients.filter(
+    ({ "use-by": useBy }) => new Date(useBy).getTime() > new Date().getTime()
+  );
+
+  const bestIngredients = freshIngredients.filter(
+    ({ "best-before": bestBefore }) => new Date(bestBefore).getTime() > new Date().getTime()
+  );
+
   return (
     <div className="App">
       <header className="App-header">
@@ -34,9 +42,7 @@ const App = () => {
             What's For Lunch?
           </button>
         ) : (
-          recipes.map(recipe => (
-            <Recipe key={recipe.title} recipe={recipe} />
-          ))
+          recipes.map(recipe => <Recipe key={recipe.title} recipe={recipe} />)
         )}
       </header>
     </div>
