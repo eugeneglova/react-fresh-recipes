@@ -16,17 +16,17 @@ const types = {
 const reducer = (state, action) => {
   switch (action.type) {
     case types.SET_LOADING: {
-      const { payload: loading } = action
+      const { payload: loading } = action;
       return { ...state, loading };
     }
 
     case types.SET_RECIPES: {
-      const { payload: recipes } = action
+      const { payload: recipes } = action;
       return { ...state, recipes };
     }
 
     case types.SET_INGREDIENTS: {
-      const { payload: ingredients } = action
+      const { payload: ingredients } = action;
       return { ...state, ingredients };
     }
 
