@@ -16,23 +16,7 @@ const getIngredientsFilter = ingredientsTitles => title =>
 
 const getTitle = ({ title }) => title;
 
-const App = () => {
-  const [{ recipes, ingredients }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
-
-  const fetch = async () => {
-    dispatch(actions.setLoading(true));
-    const [{ recipes }, { ingredients }] = await Promise.all([
-      fetchRecipes(),
-      fetchIngredients()
-    ]);
-    dispatch(actions.setRecipes(recipes));
-    dispatch(actions.setIngredients(ingredients));
-    dispatch(actions.setLoading(false));
-  };
-
+const getFilteredRecipes = (recipes, ingredients) => {
   const freshIngredients = ingredients.filter(({ "use-by": date }) =>
     dateFilter(date)
   );
@@ -53,6 +37,26 @@ const App = () => {
       ingredients.every(getIngredientsFilter(freshIngredientsTitles))
   );
 
+  return bestRecipes.concat(otherRecipes);
+};
+
+const App = () => {
+  const [{ recipes, ingredients }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
+
+  const fetch = async () => {
+    dispatch(actions.setLoading(true));
+    const [{ recipes }, { ingredients }] = await Promise.all([
+      fetchRecipes(),
+      fetchIngredients()
+    ]);
+    dispatch(actions.setRecipes(recipes));
+    dispatch(actions.setIngredients(ingredients));
+    dispatch(actions.setLoading(false));
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -61,9 +65,9 @@ const App = () => {
             What's For Lunch?
           </button>
         ) : (
-          bestRecipes
-            .concat(otherRecipes)
-            .map(recipe => <Recipe key={recipe.title} recipe={recipe} />)
+          getFilteredRecipes(recipes, ingredients).map(recipe => (
+            <Recipe key={recipe.title} recipe={recipe} />
+          ))
         )}
       </header>
     </div>
