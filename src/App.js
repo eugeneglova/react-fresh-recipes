@@ -67,12 +67,15 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <button type="button" onClick={() => fetch()}>
-          What's For Lunch?
-        </button>
-        {recipes.map(recipe => (
-          <Recipe {...recipe} ingredients={ingredients} />
-        ))}
+        {recipes.length === 0 ? (
+          <button type="button" onClick={() => fetch()}>
+            What's For Lunch?
+          </button>
+        ) : (
+          recipes.map(recipe => (
+            <Recipe {...recipe} ingredients={ingredients} />
+          ))
+        )}
       </header>
     </div>
   );
