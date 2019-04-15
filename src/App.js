@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 
-import { initialState, reducer, actions } from "reducer";
+import { initialState, reducer, actions } from "./reducer";
 import "./App.css";
 
 const fetchRecipes = async () =>
