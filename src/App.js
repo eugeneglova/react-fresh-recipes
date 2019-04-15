@@ -11,6 +11,9 @@ const fetchIngredients = async () =>
 
 const dateFilter = date => new Date(date).getTime() > new Date().getTime();
 
+const getIngredientsFilter = ingredientsTitles => title =>
+  ingredientsTitles.indexOf(title) !== -1;
+
 const getTitle = ({ title }) => title;
 
 const App = () => {
@@ -34,15 +37,20 @@ const App = () => {
     dateFilter(date)
   );
 
-  const bestIngredients = freshIngredients
+  const freshIngredientsTitles = freshIngredients.map(getTitle);
+
+  const bestIngredientsTitles = freshIngredients
     .filter(({ "best-before": date }) => dateFilter(date))
     .map(getTitle);
 
-  const bestRecipes = recipes.filter(
-    ({ title }) => bestIngredients.indexOf(title) !== -1
+  const bestRecipes = recipes.filter(({ ingredients }) =>
+    ingredients.every(getIngredientsFilter(bestIngredientsTitles))
   );
+
   const otherRecipes = recipes.filter(
-    ({ title }) => bestIngredients.indexOf(title) === -1
+    ({ ingredients }) =>
+      !ingredients.every(getIngredientsFilter(bestIngredientsTitles)) &&
+      ingredients.every(getIngredientsFilter(freshIngredientsTitles))
   );
 
   return (
