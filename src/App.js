@@ -41,7 +41,7 @@ const getFilteredRecipes = (recipes, ingredients) => {
 };
 
 const App = () => {
-  const [{ recipes, ingredients }, dispatch] = useReducer(
+  const [{ recipes, ingredients, loading }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -60,9 +60,11 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        {recipes.length === 0 ? (
+        {loading ? (
+          <h1>Loading...</h1>
+        ) : recipes.length === 0 ? (
           <button type="button" onClick={() => fetch()}>
-            What's For Lunch?
+            <h1>What's For Lunch?</h1>
           </button>
         ) : (
           getFilteredRecipes(recipes, ingredients).map(recipe => (
@@ -78,7 +80,7 @@ const Recipe = ({ recipe }) => {
   return (
     <div>
       <h1>{recipe.title}</h1>
-      <p>What you need:</p>
+      <p>What you'll need:</p>
       <ul>
         {recipe.ingredients.map(ingredient => (
           <Ingredient key={ingredient} title={ingredient} />
