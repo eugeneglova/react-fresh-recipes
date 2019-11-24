@@ -1,6 +1,6 @@
-import React, { useReducer } from "react";
+import React from "react";
 
-import { initialState, reducer, actions } from "./reducer";
+import { useDataApi } from "./hooks";
 import "./App.css";
 
 const dateFilter = date => new Date(date).getTime() > new Date().getTime();
@@ -34,11 +34,22 @@ const getFilteredRecipes = (recipes, ingredients) => {
   return bestRecipes.concat(otherRecipes);
 };
 
+const dataUrls = {
+  recipes: "https://www.mocky.io/v2/5c85f7a1340000e50f89bd6c",
+  ingredients: "https://www.mocky.io/v2/5cac82f1300000664f10368f"
+};
+
 const App = () => {
-  const [{ recipes, ingredients, loading }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const [
+    {
+      data: {
+        recipes: { recipes = [] } = {},
+        ingredients: { ingredients = [] } = {}
+      },
+      loading
+    },
+    doFetch
+  ] = useDataApi();
 
   return (
     <div className="App">
@@ -46,7 +57,7 @@ const App = () => {
         {loading ? (
           <h1>Loading...</h1>
         ) : recipes.length === 0 ? (
-          <button type="button" onClick={actions.fetch(dispatch)}>
+          <button type="button" onClick={() => doFetch(dataUrls)}>
             <h1>What's For Lunch?</h1>
           </button>
         ) : (
