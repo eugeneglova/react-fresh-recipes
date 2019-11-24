@@ -20,7 +20,6 @@ export const useDataApi = (initUrlMap = {}) => {
         }),
         state.data
       );
-      dispatch(actions.setLoading(false));
       dispatch(actions.setData(res));
     };
     fetechData();

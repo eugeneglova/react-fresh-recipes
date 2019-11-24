@@ -22,7 +22,7 @@ export const reducer = (state, action) => {
 
     case types.SET_DATA: {
       const { payload: data } = action;
-      return { ...state, data };
+      return { ...state, loading: false, data };
     }
 
     default: {
